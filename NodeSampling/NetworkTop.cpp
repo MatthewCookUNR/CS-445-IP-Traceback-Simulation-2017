@@ -2,6 +2,9 @@
 #include <iostream>
 #include <random>
 
+/*------------------------------------------------
+Constructor for the network topology class
+--------------------------------------------------*/
 NetworkTop::NetworkTop()
 {
 	markTableSize = 0;
@@ -34,6 +37,9 @@ NetworkTop::NetworkTop()
 	}
 }
 
+/*------------------------------------------------
+Deconstructor for the network topology class
+--------------------------------------------------*/
 NetworkTop::~NetworkTop()
 {
 	clearTable();
@@ -41,6 +47,10 @@ NetworkTop::~NetworkTop()
 	routers.shrink_to_fit();
 }
 
+/*------------------------------------------------
+Handles running the simulation with varying 
+number routers in the network
+--------------------------------------------------*/
 void NetworkTop::variableRouters()
 {
 	int numberOfRouters;
@@ -192,7 +202,11 @@ void NetworkTop::variableRouters()
 	routers[2]->setAttacker( true );
 	attackVictim( attackerPackets );
 }
-			
+
+/*------------------------------------------------
+Handles running the simulation with varying
+number of branches in the network
+--------------------------------------------------*/	
 void NetworkTop::variableBranches()
 {
 	int attackerPackets;
@@ -380,6 +394,10 @@ void NetworkTop::variableBranches()
 	}
 }
 
+/*------------------------------------------------
+Handles running the simulation with varying
+probability of marking packets
+--------------------------------------------------*/
 void NetworkTop::variableProbOneAttacker()
 {
 	int attackerPackets;
@@ -393,6 +411,7 @@ void NetworkTop::variableProbOneAttacker()
     {
         routers[i] = new Node;
     }
+	
 	//Branch 1
 	routers[0]->pushRouterInPath(16);
 	routers[0]->pushRouterInPath(14);
@@ -465,6 +484,14 @@ void NetworkTop::variableProbOneAttacker()
 	attackVictim( attackerPackets );
 }
 
+/*------------------------------------------------
+Handles running the simulation with varying
+multiplication factors
+
+Example: If multiplication factor is 100, the
+attacker sends 100 times more packets than
+the normal user
+--------------------------------------------------*/
 void NetworkTop::variableMult()
 {
 	int attackerPackets;
@@ -552,6 +579,9 @@ void NetworkTop::variableMult()
 	attackVictim( attackerPackets );
 }
 
+/*------------------------------------------------
+Clears the table of marked packets
+--------------------------------------------------*/
 void NetworkTop::clearTable()
 {
 	markTable.clear();
@@ -559,11 +589,16 @@ void NetworkTop::clearTable()
 	markTableSize = 0;
 }
 
+/*------------------------------------------------
+Simulates marking packets (using the node sampling
+algorithm) during a attack scenario
+--------------------------------------------------*/
 void NetworkTop::attackVictim( int attackerPackets )
 {
 	int markedRouterID;
 	for( int i = 0; i < branches; i++ )
 	{
+		//Checks if router is a malicious user
 		if(routers[i] -> isAttacker())
 		{
 			for( int x = 0; x < attackerPackets; x++ )
@@ -575,13 +610,17 @@ void NetworkTop::attackVictim( int attackerPackets )
 				}
 			}
 		}
+		//Checks if router is a normal user
 		if(routers[i] -> isNormalUser())
 		{
 			for( int x = 0; x < attackerPackets/multFactor; x++ )
 			{
 				markedRouterID =  routers[i] -> sendPacketToVictim( markProb );
+				
+				//Checks if router was marked
 				if( markedRouterID != 0 )
 				{
+					//Adds marked packet to table
 					addMarkedPacket( markedRouterID );
 				}
 			}
@@ -592,6 +631,10 @@ void NetworkTop::attackVictim( int attackerPackets )
 	clearTable();
 }
 
+/*------------------------------------------------
+Increments the number of marked packets for the 
+given router id
+-------------------------------------------------*/
 void NetworkTop::addMarkedPacket( int routerID )
 {
 	if( isInMarkedTable( routerID ) == false )
@@ -613,6 +656,10 @@ void NetworkTop::addMarkedPacket( int routerID )
 	}
 }
 
+/*------------------------------------------------
+Prints a table that details how many marked 
+packets were recieved from all the routers
+-------------------------------------------------*/
 void NetworkTop::printMarkTable()
 {
 	for( int i = 0; i < markTableSize; i++ )
@@ -622,16 +669,26 @@ void NetworkTop::printMarkTable()
 	cout << endl;
 }
 
+/*------------------------------------------------
+increments the size of the marked packet table
+-------------------------------------------------*/
 void NetworkTop::incrementTableSize()
 {
 	markTableSize++;
 }
 
+/*------------------------------------------------
+Gets the size of the marked packet table
+-------------------------------------------------*/
 int NetworkTop::getTableSize()
 {
 	return markTableSize;
 }
 
+/*------------------------------------------------
+Checks to see if a node is already in the marked
+packet table
+-------------------------------------------------*/
 bool NetworkTop::isInMarkedTable( int routerID )
 {
 	for( int i = 0; i < markTableSize; i++ )
@@ -644,6 +701,10 @@ bool NetworkTop::isInMarkedTable( int routerID )
 	return false;
 }
 
+/*------------------------------------------------
+Sorts the marked packet table in order from 
+greatest to largest
+-------------------------------------------------*/
 void NetworkTop::markTableSort()
 {
 	bool sorted = false;
@@ -668,6 +729,9 @@ void NetworkTop::markTableSort()
 	}
 }
 
+/*------------------------------------------------
+Randomly generates a number between 0 and 1
+-------------------------------------------------*/
 double NetworkTop::randomNumberGen()
 {
 	double randomProb;
@@ -677,11 +741,3 @@ double NetworkTop::randomNumberGen()
 	randomProb = rng(gen);
 	return randomProb;
 }
-
-
-
-
-
-
-
-

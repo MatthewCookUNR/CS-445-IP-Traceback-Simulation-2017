@@ -3,6 +3,10 @@
 
 using namespace std;
 
+/*------------------------------------------------
+Tuple class is used by a node to store the start,
+end, and distance of another node
+--------------------------------------------------*/
 class Tuple
 {
 	public:

@@ -3,6 +3,10 @@
 
 using namespace std;
 
+/*------------------------------------------------
+NetworkTop class contains the network topology
+and functionality of the simulation
+--------------------------------------------------*/
 class NetworkTop
 {
 	public:

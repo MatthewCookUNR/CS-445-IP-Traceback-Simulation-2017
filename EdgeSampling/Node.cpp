@@ -1,52 +1,74 @@
 #include "Node.h"
 #include <random>
 
+/*------------------------------------------------
+Constructor for the node class
+--------------------------------------------------*/
 Node::Node()
 {
 	attacker = false;
 	normalUser = false;
 }
 
+/*------------------------------------------------
+Deconstructor for the network topology class
+--------------------------------------------------*/
 Node::~Node()
 {
 
 }
 
+/*------------------------------------------------
+Sets the attacker status
+--------------------------------------------------*/
 void Node::setAttacker( bool status )
 {
 	attacker = status;
 }
 
+/*------------------------------------------------
+Sets normal user status 
+--------------------------------------------------*/
 void Node::setNormalUser( bool status )
 {
 	normalUser = status;
 }
-/*
-void Node::setVictim()
-{
-	victim = true;
-}
-*/
+
+/*------------------------------------------------
+Returns whether or not node is a attacker
+--------------------------------------------------*/
 bool Node::isAttacker()
 {
 	return attacker;
 }
 
+/*------------------------------------------------
+Returns whether or not node is a normal user
+--------------------------------------------------*/
 bool Node::isNormalUser()
 {
 	return normalUser;
 }
 
+/*------------------------------------------------
+Pushes a router to the route path vector
+--------------------------------------------------*/
 void Node::pushRouterInPath( int routerID )
 {
 	routePath.push_back( routerID );
 }
 
+/*------------------------------------------------
+Gets the size of the route path vector
+--------------------------------------------------*/
 int Node::getNumberOfPathRouters()
 {
 	return routePath.size();
 }
 
+/*------------------------------------------------
+Simulates sending a packet to the victim
+--------------------------------------------------*/
 Tuple Node::sendPacketToVictim( double prob )
 {
 	int routeSize = routePath.size();
@@ -68,11 +90,13 @@ Tuple Node::sendPacketToVictim( double prob )
 			}
 			markedPacket.distance++;
 		}
-		//cout << "Start: " << markedPacket.start << "	End: " << markedPacket.end << "    Distance: " << markedPacket.distance << endl;
 	}
 	return markedPacket;
 }
 
+/*------------------------------------------------
+Randomly generates a number between 0 and 1
+--------------------------------------------------*/
 double Node::randomNumberGen()
 {
 	double randomProb;
@@ -83,19 +107,3 @@ double Node::randomNumberGen()
 	return randomProb;
 }
 
-/*
-bool Node::isVicim()
-{
-	return victim;
-}
-
-void Node::setNextNodeInPath(Node * nextNode)
-{
-	nextNodeInPath = nextNode;
-}
-
-Node* Node::getNextNodeInPath()
-{
-	return nextNodeInPath;
-}
-*/

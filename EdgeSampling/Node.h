@@ -4,6 +4,10 @@
 
 using namespace std;
 
+/*------------------------------------------------
+Node class simulates the functionality of a node
+in a network
+--------------------------------------------------*/
 class Node
 {
 	public:
@@ -11,19 +15,14 @@ class Node
 		~Node();
 		void setAttacker(bool status);
 		void setNormalUser(bool status);
-		//void setVictim();
 		bool isAttacker();
 		bool isNormalUser();
 		void pushRouterInPath( int routerID );
 		int getNumberOfPathRouters();
 		Tuple sendPacketToVictim( double prob );
 		double randomNumberGen();
-		//bool isVicim();
-		//void setNextNodeInPath(Node* nextNode);
-		//Node* getNextNodeInPath();
 	private:
 		vector<int> routePath;
 		bool attacker;
 		bool normalUser;
-		//bool victim;
 };
